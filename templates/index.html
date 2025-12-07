@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Package Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2E86C1;
+            margin-bottom: 30px;
+        }
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .full-width {
+            grid-column: span 2;
+        }
+        .submit-btn {
+            grid-column: span 2;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #2E86C1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #1B4F72;
+        }
+        .section-title {
+            grid-column: span 2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #34495E;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        .result {
+            grid-column: span 2;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .result.success {
+            color: green;
+            background-color: #DFF2BF;
+        }
+        .result.failure {
+            color: red;
+            background-color: #FFD2D2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Travel Package Purchase Prediction</h2>
+        <form method="POST">
+            <div class="section-title">Personal Details</div>
+            <label>Age:</label><input type="number" name="Age" min="18" max="90" value="30">
+            <label>Gender:</label>
+            <select name="Gender">
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+            <label>Marital Status:</label>
+            <select name="MaritalStatus">
+                <option>Married</option>
+                <option>Unmarried</option>
+                <option>Divorced</option>
+            </select>
+
+            <div class="section-title">Travel Interest</div>
+            <label>Product Pitched:</label>
+            <select name="ProductPitched">
+                <option>Basic</option>
+                <option>Deluxe</option>
+            </select>
+            <label>Preferred Property Star:</label>
+            <select name="PreferredPropertyStar">
+                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+            </select>
+            <label>Number of Trips:</label><input type="number" name="NumberOfTrips" value="1">
+
+            <div class="section-title">Pitch Information</div>
+            <label>Type of Contact:</label>
+            <select name="TypeofContact">
+                <option>Self Enquiry</option>
+                <option>Company Invited</option>
+            </select>
+            <label>Duration Of Pitch (minutes):</label><input type="number" name="DurationOfPitch" value="5">
+            <label>Number of Followups:</label><input type="number" name="NumberOfFollowups" value="2">
+            <label>Pitch Satisfaction Score:</label>
+            <select name="PitchSatisfactionScore">
+                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+            </select>
+            <label>Designation:</label>
+            <select name="Designation">
+                <option>Executive</option>
+                <option>Manager</option>
+            </select>
+            <label>City Tier:</label>
+            <select name="CityTier">
+                <option>1</option><option>2</option><option>3</option>
+            </select>
+
+            <div class="section-title">Financial & Other Details</div>
+            <label>Occupation:</label>
+            <select name="Occupation">
+                <option>Salaried</option>
+                <option>Free Lancer</option>
+                <option>Small Business</option>
+            </select>
+            <label>Passport:</label>
+            <select name="Passport">
+                <option>0</option><option>1</option>
+            </select>
+            <label>Own Car:</label>
+            <select name="OwnCar">
+                <option>0</option><option>1</option>
+            </select>
+            <label>Monthly Income:</label><input type="number" name="MonthlyIncome" value="20000">
+            <label>Total Visiting:</label><input type="number" name="TotalVisiting" value="2">
+
+            <input class="submit-btn full-width" type="submit" value="Predict">
+
+            {% if prediction_text %}
+            <div class="result {{ 'success' if prediction_text.startswith('✔') else 'failure' }}">{{ prediction_text }}</div>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>

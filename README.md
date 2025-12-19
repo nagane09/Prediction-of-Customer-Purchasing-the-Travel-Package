@@ -1,7 +1,3 @@
-# Travel-Package-Purchase-Prediction
-
-https://prediction-of-customer-purchasing-the-rsab.onrender.com/
-
 # Prediction of Customer Purchasing the Travel Package
 
 🔗 **Live Demo:** https://prediction-of-customer-purchasing-the-rsab.onrender.com/

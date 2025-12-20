@@ -5,31 +5,23 @@ import os
 
 app = Flask(__name__)
 
-# -----------------------------
-# File paths
-# -----------------------------
+
 MODEL_PATH = "model.joblib"
 PREPROCESSOR_PATH = "preprocessor.joblib"
 
-# -----------------------------
-# Load Saved Model + Preprocessor
-# -----------------------------
 if not os.path.exists(MODEL_PATH) or not os.path.exists(PREPROCESSOR_PATH):
     raise FileNotFoundError("Model or preprocessor files are missing!")
 
 model = joblib.load(MODEL_PATH)
 preprocessor = joblib.load(PREPROCESSOR_PATH)
 
-# -----------------------------
-# Home Route
-# -----------------------------
+
 @app.route("/", methods=["GET", "POST"])
 def home():
     prediction_text = ""
     
     if request.method == "POST":
         try:
-            # Collect input data from form
             input_data = pd.DataFrame([{
                 "Age": int(request.form["Age"]),
                 "Gender": request.form["Gender"],
@@ -50,7 +42,6 @@ def home():
                 "TotalVisiting": int(request.form["TotalVisiting"])
             }])
 
-            # Transform and predict
             transformed = preprocessor.transform(input_data)
             prediction = model.predict(transformed)[0]
 
@@ -64,9 +55,7 @@ def home():
 
     return render_template("index.html", prediction_text=prediction_text)
 
-# -----------------------------
-# Run Flask App
-# -----------------------------
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Use Render's PORT or default to 5000 locally
+    port = int(os.environ.get("PORT", 5000))  
     app.run(host="0.0.0.0", port=port, debug=True)

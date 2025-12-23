@@ -144,98 +144,36 @@ Hyperparameter tuning was performed to reduce overfitting and improve generaliza
 
 ----
 
-## 🧠 Mathematical Intuition (XGBoost)
+### XGBoost Mathematical Formulation
 
-XGBoost (Extreme Gradient Boosting) is an **ensemble learning algorithm** that builds a strong classifier by **sequentially adding decision trees**, where each new tree corrects the mistakes made by the previous ones.
+Objective Function:
+Total Loss = Prediction Loss + Regularization
 
----
+Prediction Update:
+y_hat(t) = y_hat(t-1) + f_t(x)
 
-### 📌 Model Objective Function
-
-At each boosting iteration \( t \), XGBoost minimizes the following objective:
-
-\[
-\mathcal{L}^{(t)} = \sum_{i=1}^{n} l(y_i, \hat{y}_i^{(t)}) + \sum_{k=1}^{t} \Omega(f_k)
-\]
+Regularization Term:
+Omega(f) = gamma * T + (1/2) * lambda * sum(w_j^2)
 
 Where:
-- \( l(y_i, \hat{y}_i) \) is the **loss function** (log loss for binary classification)
-- \( \hat{y}_i^{(t)} \) is the prediction at iteration \( t \)
-- \( f_k \) represents the decision tree added at iteration \( k \)
-- \( \Omega(f_k) \) is the **regularization term**
+- T = number of leaves
+- w_j = leaf weight
+- gamma = penalty for additional leaves
+- lambda = L2 regularization
 
----
+Gradient Computation:
+g_i = first-order gradient of loss
+h_i = second-order gradient (Hessian)
 
-### 📉 Regularization Term
+Split Gain:
+Gain = 0.5 * [
+(G_L^2 / (H_L + lambda)) +
+(G_R^2 / (H_R + lambda)) -
+((G_L + G_R)^2 / (H_L + H_R + lambda))
+] - gamma
 
-XGBoost controls model complexity using:
-
-\[
-\Omega(f) = \gamma T + \frac{1}{2}\lambda \sum_{j=1}^{T} w_j^2
-\]
-
-Where:
-- \( T \) = number of leaves in the tree  
-- \( w_j \) = leaf weight  
-- \( \gamma \) penalizes adding new leaves  
-- \( \lambda \) applies L2 regularization on leaf weights  
-
-This prevents **overfitting**, even when training accuracy is very high.
-
----
-
-### 🔁 Gradient Boosting Mechanism
-
-Instead of fitting directly to the target, XGBoost fits each tree to the **negative gradient of the loss function**:
-
-\[
-g_i = \frac{\partial l(y_i, \hat{y}_i)}{\partial \hat{y}_i}, \quad
-h_i = \frac{\partial^2 l(y_i, \hat{y}_i)}{\partial \hat{y}_i^2}
-\]
-
-Where:
-- \( g_i \) = first-order gradient  
-- \( h_i \) = second-order Hessian  
-
-Using both gradients allows **faster convergence** and **more stable optimization**.
-
----
-
-### 🌲 Optimal Split Criterion
-
-For each split, XGBoost computes the **gain**:
-
-\[
-Gain = \frac{1}{2}
-\left[
-\frac{G_L^2}{H_L + \lambda}
-+
-\frac{G_R^2}{H_R + \lambda}
--
-\frac{(G_L + G_R)^2}{(H_L + H_R + \lambda)}
-\right]
-- \gamma
-\]
-
-Where:
-- \( G_L, G_R \) = sum of gradients for left and right nodes  
-- \( H_L, H_R \) = sum of Hessians  
-
-Splits are chosen only if they **increase the objective function**, enforcing model simplicity.
-
----
-
-### 🎯 Probability Estimation
-
-The final model prediction is:
-
-\[
-\hat{y} = \sigma\left(\sum_{t=1}^{T} f_t(x)\right)
-\]
-
-Where:
-- \( \sigma(\cdot) \) is the **sigmoid function**
-- Output represents the **probability of a customer purchasing a holiday package**
+Probability Output:
+Probability = 1 / (1 + exp(-score))
 
 ---
 

@@ -142,39 +142,6 @@ Hyperparameter tuning was performed to reduce overfitting and improve generaliza
 
 ✅ The tuned **XGBoost** model demonstrates **strong predictive performance** while maintaining **good generalization** on unseen data.
 
-----
-
-### XGBoost Mathematical Formulation
-
-Objective Function:
-Total Loss = Prediction Loss + Regularization
-
-Prediction Update:
-y_hat(t) = y_hat(t-1) + f_t(x)
-
-Regularization Term:
-Omega(f) = gamma * T + (1/2) * lambda * sum(w_j^2)
-
-Where:
-- T = number of leaves
-- w_j = leaf weight
-- gamma = penalty for additional leaves
-- lambda = L2 regularization
-
-Gradient Computation:
-g_i = first-order gradient of loss
-h_i = second-order gradient (Hessian)
-
-Split Gain:
-Gain = 0.5 * [
-(G_L^2 / (H_L + lambda)) +
-(G_R^2 / (H_R + lambda)) -
-((G_L + G_R)^2 / (H_L + H_R + lambda))
-] - gamma
-
-Probability Output:
-Probability = 1 / (1 + exp(-score))
-
 ---
 
 ### 📊 Why This Works Well for This Problem
